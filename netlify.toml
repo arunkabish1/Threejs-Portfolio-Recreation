@@ -1,0 +1,32 @@
+[build]
+  # Directory to change into before starting build commands.
+  base = "/"
+  # Directory to publish to Netlify.
+  publish = "dist"
+  # Command to run to build the site.
+  command = "npm run build"
+
+[context.production]
+  # Environment variables for the production context.
+  [context.production.environment]
+    NODE_VERSION = "18.20.3"
+
+[context.deploy-preview]
+  # Environment variables for deploy previews.
+  [context.deploy-preview.environment]
+    NODE_VERSION = "18.20.3"
+
+[context.branch-deploy]
+  # Environment variables for branch deploys.
+  [context.branch-deploy.environment]
+    NODE_VERSION = "18.20.3"
+
+[context.deploy-preview]
+  # Deploy preview settings
+  command = "npm run build"
+  publish = "dist"
+
+[context.branch-deploy]
+  # Branch deploy settings
+  command = "npm run build"
+  publish = "dist"
