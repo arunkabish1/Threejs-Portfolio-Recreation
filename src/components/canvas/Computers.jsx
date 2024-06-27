@@ -3,25 +3,25 @@ import * as THREE from "three";
 
 const ComputersCanvas = () => {
   const canvasRef = useRef(null);
-  let renderer, scene, camera;
-  let animationFrameId;
 
   useEffect(() => {
-    const init = () => {
-      // Initialize Three.js components
-      renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
-      renderer.setSize(window.innerWidth, window.innerHeight); // Set initial size
+    let renderer, scene, camera;
+    let animationFrameId;
 
+    const init = () => {
+      renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 5;
 
+      // Example geometry
       const geometry = new THREE.BoxGeometry();
       const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const cube = new THREE.Mesh(geometry, material);
+
       scene.add(cube);
 
-      // Debugging: Check geometry attributes for NaN
+      // Debugging: Check geometry attributes
       if (geometry.attributes.position.array.some(isNaN)) {
         console.error("Position attribute contains NaN values:", geometry.attributes.position.array);
       }
@@ -35,7 +35,6 @@ const ComputersCanvas = () => {
 
       renderer.domElement.addEventListener("webglcontextrestored", init);
 
-      // Animation loop
       const animate = () => {
         animationFrameId = requestAnimationFrame(animate);
         cube.rotation.x += 0.01;
@@ -46,20 +45,16 @@ const ComputersCanvas = () => {
       animate();
     };
 
-    // Initialize Three.js on mount
     init();
 
-    // Cleanup function
     return () => {
-      // Dispose of renderer and clean up animation frame
       if (renderer) {
         renderer.dispose();
       }
       cancelAnimationFrame(animationFrameId);
     };
-  }, []); // Empty dependency array ensures useEffect runs only on mount and unmount
+  }, []);
 
-  // Return canvas element
   return <canvas ref={canvasRef} />;
 };
 
